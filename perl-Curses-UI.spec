@@ -1,7 +1,7 @@
 %define name	perl-Curses-UI
 %define module  Curses-UI
 %define version	0.95
-%define release	%mkrel 6
+%define release	%mkrel 7
 
 Summary:	A curses based perl OO user interface framework
 Name:		%{name}
