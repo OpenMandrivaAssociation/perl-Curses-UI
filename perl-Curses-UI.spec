@@ -20,7 +20,6 @@ BuildRequires:  perl-Test-Pod
 BuildRequires:  perl-Term-ReadKey
 BuildRequires:  perl-Curses
 BuildArch:	noarch
-BuildRoot:	%{_tmppath}/%{name}-buildroot
 Patch0: Curses-UI-0.95-more-Listbox-alike-Popupmenu.patch
 Patch1: Curses-UI-0.95-fix-overflow-in-Listbox-on-pageup-pagedown.patch
 Patch2: Curses-UI-0.95-add-method-to-modify-button-label.patch
