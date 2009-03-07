@@ -1,7 +1,7 @@
 %define name	perl-Curses-UI
 %define module  Curses-UI
 %define version	0.96
-%define release	%mkrel 2
+%define release	%mkrel 3
 
 Name:		%{name}
 Version:	%{version}
