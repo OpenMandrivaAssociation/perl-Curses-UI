@@ -13,11 +13,11 @@ Source0:    http://www.cpan.org/modules/by-module/Curses/%{upstream_name}-%{upst
 Patch0: Curses-UI-0.95-more-Listbox-alike-Popupmenu.patch
 Patch2: Curses-UI-0.95-add-method-to-modify-button-label.patch
 Patch3: Curses-UI-0.95-allow-setting-active-line.patch
-Patch4: Curses-UI-0.95-focus-up-and-focus-down.patch
+Patch4: Curses-UI-0.9607-focus-up-and-focus-down.patch
 Patch5: Curses-UI-0.95-make-dialog-message-focusable-if-scrolled.patch
 Patch6: Curses-UI-0.95-new-Container-method--delete_object.patch
 Patch7: Curses-UI-0.95-do-not-replace-last-char-with-overflow-char.patch
-Patch8: Curses-UI-0.95-gpm-does-not-work--hide-error-for-now.patch
+Patch8: Curses-UI-0.9607-gpm-does-not-work--hide-error-for-now.patch
 Patch9: Curses-UI-0.95-only-redraw-Listbox-when-needed-otherwise-it-occurs-after-focus-next.patch
 
 BuildRequires:  perl(Curses)
