@@ -1,16 +1,15 @@
-%define name	perl-Curses-UI
-%define module  Curses-UI
-%define version	0.96
-%define release	%mkrel 3
+%define upstream_name    Curses-UI
+%define upstream_version 0.9607
 
-Name:		%{name}
-Version:	%{version}
-Release:	%{release}
+Name:		perl-%{upstream_name}
+Version:	%perl_convert_version %{upstream_version}
+Release:	%mkrel 1
+
 Summary:	A curses based perl OO user interface framework
-License:	GPL or Artistic
+License:	GPL+ or Artistic
 Group:		Development/Perl
-URL:		http://search.cpan.org/dist/%{module}
-Source:     http://www.cpan.org/modules/by-module/Curses/%{module}-%{version}.tar.gz
+URL:		http://search.cpan.org/dist/%{upstream_name}
+Source0:    http://www.cpan.org/modules/by-module/Curses/%{upstream_name}-%{upstream_version}.tar.gz
 Patch0: Curses-UI-0.95-more-Listbox-alike-Popupmenu.patch
 Patch2: Curses-UI-0.95-add-method-to-modify-button-label.patch
 Patch3: Curses-UI-0.95-allow-setting-active-line.patch
@@ -20,20 +19,21 @@ Patch6: Curses-UI-0.95-new-Container-method--delete_object.patch
 Patch7: Curses-UI-0.95-do-not-replace-last-char-with-overflow-char.patch
 Patch8: Curses-UI-0.95-gpm-does-not-work--hide-error-for-now.patch
 Patch9: Curses-UI-0.95-only-redraw-Listbox-when-needed-otherwise-it-occurs-after-focus-next.patch
-Requires:	perl-Curses
-Requires:	perl-Term-ReadKey
-BuildRequires:  perl-Test-Pod
-BuildRequires:  perl-Term-ReadKey
-BuildRequires:  perl-Curses
+
+BuildRequires:  perl(Curses)
+BuildRequires:  perl(Term::ReadKey)
+BuildRequires:  perl(Test::Pod)
 BuildArch:	noarch
-BuildRoot:	%{_tmppath}/%{name}-%{version}
+BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}
+Requires:	perl(Curses)
+Requires:	perl(Term::ReadKey)
 
 %description
 A UI framework based on the curses library. Curses::UI contains
 several widgets which can be used to build a user interface.
 
 %prep
-%setup -q -n %{module}-%{version}
+%setup -q -n %{upstream_name}-%{upstream_version}
 %patch0 -p1
 %patch2 -p1
 %patch3 -p1
@@ -66,6 +66,6 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root)
-%doc README examples CREDITS BUGS Changes
+%doc README examples CREDITS Changes
 %{perl_vendorlib}/Curses
 %{_mandir}/*/*
