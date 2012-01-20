@@ -27,6 +27,8 @@ BuildArch:	noarch
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}
 Requires:	perl(Curses)
 Requires:	perl(Term::ReadKey)
+# temporary dep due to the perl-5.14 bump
+BuildRequires:  perl-Curses >= 1.280.0-6
 
 %description
 A UI framework based on the curses library. Curses::UI contains
