@@ -1,9 +1,9 @@
 %define upstream_name    Curses-UI
-%define upstream_version 0.9607
+%define upstream_version 0.9609
 
 Name:		perl-%{upstream_name}
 Version:	%perl_convert_version %{upstream_version}
-Release:	%mkrel 4
+Release:	%mkrel 1
 
 Summary:	A curses based perl OO user interface framework
 License:	GPL+ or Artistic
