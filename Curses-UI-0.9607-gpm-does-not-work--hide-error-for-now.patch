@@ -1,0 +1,11 @@
+--- Curses-UI-0.9607/lib/Curses/UI.pm.orig	2008-12-21 22:38:18.000000000 +0100
++++ Curses-UI-0.9607/lib/Curses/UI.pm	2009-07-24 18:10:17.000000000 +0200
+@@ -288,7 +288,7 @@
+ 	print STDERR "DEBUG: ncurses mouse events are enabled\n"
+ 	    if $Curses::UI::debug;
+         # In case of gpm, mousemask fails. (MT: Not for me, maybe GPM changed?)
+-	eval { $mmreturn = mousemask( ALL_MOUSE_EVENTS(), $old ) };
++	eval { $mmreturn = mousemask( ALL_MOUSE_EVENTS(), $old ) } if $Curses::UI::gpm_mouse;
+ 	if ($Curses::UI::debug) {
+ 	    print STDERR "DEBUG: mousemask returned $mmreturn\n";
+ 	    print STDERR "DEBUG: Old is now $old\n";

@@ -1,0 +1,220 @@
+--- Curses-UI-0.95/lib/Curses/UI/Container.pm.pix	2004-10-22 18:31:40.000000000 +0200
++++ Curses-UI-0.95/lib/Curses/UI/Container.pm	2006-10-20 09:56:17.000000000 +0200
+@@ -281,6 +281,7 @@
+ sub focus_prev()
+ {
+     my $this = shift;
++    my $do_not_circle = shift;
+ 
+     # Return without doing anything if we do not
+     # have a focuslist.
+@@ -298,6 +299,7 @@
+     until ($circle_flag) {
+ 	$idx--;
+ 	if ($idx < 0) {
++	    $do_not_circle and return;
+ 	    $idx = @{$this->{-focusorder}} - 1;
+ 	    $circle_flag = 1;
+ 	}
+@@ -308,13 +310,14 @@
+     # Focus the previous object.    
+     $this->focus($this->{-focusorder}->[$idx], undef, -1);
+     if ( $circle_flag && $this->{-releasefocus} ) {
+-        $this->{-parent}->focus_prev;
++        $this->{-parent}->focus_prev($do_not_circle);
+     }
+ }
+ 
+ sub focus_next()
+ {
+     my $this = shift;
++    my $do_not_circle = shift;
+ 
+     # Return without doing anything if we do not
+     # have a focuslist.
+@@ -331,6 +334,7 @@
+     until ($circle_flag) {
+ 	$idx++;
+ 	if ($idx >= scalar (@{$this->{-focusorder}}) ) {
++	    $do_not_circle and return;
+ 	    $idx = 0;
+ 	    $circle_flag = 1;
+ 	}
+@@ -342,7 +346,7 @@
+     $this->focus($this->{-focusorder}->[$idx], undef, +1);
+     #check if we have to release the focus
+     if ( $circle_flag && $this->{-releasefocus} ) {
+-        $this->{-parent}->focus_next;
++        $this->{-parent}->focus_next($do_not_circle);
+     }
+ }
+ 
+--- Curses-UI-0.95/lib/Curses/UI/Buttonbox.pm.pix	2006-10-20 09:56:17.000000000 +0200
++++ Curses-UI-0.95/lib/Curses/UI/Buttonbox.pm	2006-10-20 09:56:17.000000000 +0200
+@@ -14,7 +14,7 @@
+ 
+ use strict;
+ use Curses;
+-use Curses::UI::Widget;
++use Curses::UI::Widget 'height_by_windowscrheight', 'loose_focus';
+ use Curses::UI::Common;
+ 
+ use vars qw(
+@@ -66,6 +66,8 @@
+     'loose-focus'  => \&loose_focus,
+     'next'         => \&next_button,
+     'previous'     => \&previous_button,
++    'focus-up'   => \&focus_up,
++    'focus-down' => \&focus_down,
+     'shortcut'     => \&shortcut,  
+     'focus-shift'  => \&focus_shift,
+     'mouse-button1'=> \&mouse_button1,
+@@ -76,10 +78,10 @@
+     KEY_BTAB()     => 'focus-shift',
+     KEY_ENTER()    => 'press-button',
+     CUI_SPACE()    => 'press-button',
+-    KEY_UP()       => 'previous',
+-    "k"            => 'previous',
+-    KEY_DOWN()     => 'next',
+-    "j"            => 'next',
++    KEY_UP()       => 'focus-up',
++    "k"            => 'focus-up',
++    KEY_DOWN()     => 'focus-down',
++    "j"            => 'focus-down',
+     KEY_LEFT()     => 'previous',
+     'h'            => 'previous',
+     KEY_RIGHT()    => 'next', 
+@@ -267,6 +269,31 @@
+     return $this;
+ }
+ 
++sub focus_up
++{
++    my $this = shift;
++    my $key = shift;
++
++    $this->previous_button;
++    if ($this->{-selected} < 0)
++    {
++	$this->{-selected} = 0;
++	$this->SUPER::focus_up;
++    }
++}
++
++sub focus_down
++{
++    my $this = shift;
++    my $key = shift;
++
++    $this->next_button();
++    if ($this->{-selected} > $this->{-max_selected}) {
++	$this->{-selected} = $this->{-max_selected};
++	$this->SUPER::focus_down;
++    }
++}
++
+ # Focus the next button. If the last button was 
+ # selected, let the buttonbox loose focus.
+ sub focus_shift()
+--- Curses-UI-0.95/lib/Curses/UI/Widget.pm.pix	2004-10-03 17:14:52.000000000 +0200
++++ Curses-UI-0.95/lib/Curses/UI/Widget.pm	2006-10-20 09:56:17.000000000 +0200
+@@ -38,6 +38,8 @@
+     process_padding
+     loose_focus
+     lose_focus
++    focus_up
++    focus_down
+ );
+ 
+ sub new ()
+@@ -453,7 +455,29 @@
+ sub loose_focus()
+ {
+     my $this = shift;
+-    my $key  = shift;
++    my $key = shift;
++
++    my $backward = defined $key && $key eq KEY_BTAB();
++    $this->loose_focus_this_way($backward, 0);
++}
++
++sub focus_up
++{
++    my $this = shift;
++    $this->loose_focus_this_way(1, 1);
++}
++
++sub focus_down
++{
++    my $this = shift;
++    $this->loose_focus_this_way(0, 1);
++}
++
++sub loose_focus_this_way()
++{
++    my $this = shift;
++    my $backward = shift;
++    my $do_not_circle = shift;
+         
+     # The focus change will draw $this anyhow and this
+     # will reset the schedule if somewhere in the middle of
+@@ -477,10 +501,10 @@
+                 return $this;
+         }
+ 
+-        if (defined $key and $key eq KEY_BTAB()) {
+-            $this->parent->focus_prev();
++        if ($backward) {
++            $this->parent->focus_prev($do_not_circle);
+         } else {
+-            $this->parent->focus_next();
++            $this->parent->focus_next($do_not_circle);
+         }
+     }
+ 
+--- Curses-UI-0.9607/lib/Curses/UI/Checkbox.pm.orig 2008-12-21 22:21:26.000000000 +0100
++++ Curses-UI-0.9607/lib/Curses/UI/Checkbox.pm    2009-07-24 17:58:19.000000000 +0200
+@@ -66,6 +66,8 @@
+ =cut
+
+ my %routines = ( 'loose-focus'   => \&loose_focus,
++		 'focus-up'      => \&focus_up,
++		 'focus-down'    => \&focus_down,
+ 		 'uncheck'       => \&uncheck,
+ 		 'check'         => \&check,
+ 		 'toggle'        => \&toggle,
+@@ -75,7 +77,10 @@
+ my %bindings = ( KEY_ENTER() => 'loose-focus',
+ 		 CUI_TAB()   => 'loose-focus',
+ 		 KEY_BTAB()  => 'loose-focus',
+-		 CUI_SPACE() => 'toggle',
++		 KEY_UP()    => 'focus-up',
++		 "k"         => 'focus-up',
++		 KEY_DOWN()  => 'focus-down',
++		 CUI_SPACE() => 'toggle',
+ 		 '0'         => 'uncheck',
+ 		 'n'         => 'uncheck',
+ 		 '1'         => 'check',
+--- Curses-UI-0.95/lib/Curses/UI/TextEntry.pm.pix	2004-10-03 17:14:52.000000000 +0200
++++ Curses-UI-0.95/lib/Curses/UI/TextEntry.pm	2006-10-20 09:56:17.000000000 +0200
+@@ -66,6 +66,9 @@
+     $this->clear_binding('loose-focus');
+     $this->set_binding('loose-focus', KEY_ENTER(), CUI_TAB(), KEY_BTAB() );
+ 
++    $this->set_binding('focus-up', KEY_UP());
++    $this->set_binding('focus-down', KEY_DOWN());
++
+     return $this;
+ }
+ 
+--- Curses-UI-0.95/lib/Curses/UI/TextEditor.pm.pix	2004-11-27 18:12:58.000000000 +0100
++++ Curses-UI-0.95/lib/Curses/UI/TextEditor.pm	2006-10-20 09:56:17.000000000 +0200
+@@ -36,6 +36,8 @@
+ # Configuration: routine name to subroutine mapping.
+ my %routines = (
+     'loose-focus'            => \&loose_focus,
++    'focus-up'               => \&focus_up,
++    'focus-down'             => \&focus_down,
+     'undo'                   => \&undo,
+     'paste'                  => \&paste,
+     'delete-till-eol'        => \&delete_till_eol,

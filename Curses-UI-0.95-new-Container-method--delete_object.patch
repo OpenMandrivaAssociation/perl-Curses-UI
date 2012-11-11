@@ -1,0 +1,31 @@
+--- Curses-UI-0.95/lib/Curses/UI/Container.pm.pix	2006-10-17 11:01:15.000000000 +0200
++++ Curses-UI-0.95/lib/Curses/UI/Container.pm	2006-10-17 11:41:47.000000000 +0200
+@@ -131,6 +131,17 @@
+     return $object;
+ }
+ 
++sub delete_object 
++{
++    my $this = shift;
++    my $object = shift;
++
++    my $id = $this->{'-object2id'}{$object} or return $this;
++    $this->delete($id);
++
++    return $this;
++}
++
+ # Delete the contained object with id=$id from the Container.
+ sub delete(;$)
+ {
+@@ -648,6 +659,10 @@
+         -y    => 5,
+     );
+ 
++=item * B<delete_object> ( WIDGET )
++
++This method deletes the contained widget from the container.
++
+ =item * B<delete> ( ID )
+ 
+ This method deletes the contained widget with the given ID

@@ -1,0 +1,18 @@
+--- Curses-UI-0.95/lib/Curses/UI/Listbox.pm.pix	2006-12-19 15:25:53.000000000 +0100
++++ Curses-UI-0.95/lib/Curses/UI/Listbox.pm	2006-12-19 15:27:32.000000000 +0100
+@@ -509,13 +509,13 @@
+ 	    my $changed = ($this->{-selected}->{$id} ? 0 : 1);
+ 	    $this->{-selected}->{$id} = 1;
+ 	    $this->run_event('-onchange') if $changed;
+-	    $this->schedule_draw(1);
++	    $this->schedule_draw(1) if $changed;
+ 	} else {
+ 	    my $changed = (not defined $this->{-selected} or
+ 			   ($this->{-selected} != $id));
+ 	    $this->{-selected} = $id;
+ 	    $this->run_event('-onchange') if $changed;
+-	    $this->schedule_draw(1);
++	    $this->schedule_draw(1) if $changed;
+ 	}
+     }
+     return $this;

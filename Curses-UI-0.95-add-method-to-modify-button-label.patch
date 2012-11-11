@@ -1,0 +1,31 @@
+--- Curses-UI-0.95/lib/Curses/UI/Buttonbox.pm.pix	2006-10-17 10:02:31.000000000 +0200
++++ Curses-UI-0.95/lib/Curses/UI/Buttonbox.pm	2006-10-17 10:04:48.000000000 +0200
+@@ -240,6 +240,17 @@
+     }
+ }
+ 
++sub set_label
++{
++    my $this = shift;
++    my $id = shift;
++    my $label = shift;
++    my $button = $this->{-buttons}[$id];
++    $button->{-label} = $label;
++    $this->intellidraw;
++    return $this;
++}
++
+ sub next_button()
+ {
+     my $this = shift;
+@@ -673,6 +684,10 @@
+ B<-value> option, see B<-buttons> above), that value will be 
+ returned.
+ 
++=item * B<set_label> ( INDEX, TEXT )
++
++Modifies the label of button at index
++
+ =back
+ 
+ 

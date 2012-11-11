@@ -1,0 +1,45 @@
+--- Curses-UI-0.95/lib/Curses/UI/Popupmenu.pm.pix	2006-10-16 16:08:24.000000000 +0200
++++ Curses-UI-0.95/lib/Curses/UI/Popupmenu.pm	2006-10-16 16:10:57.000000000 +0200
+@@ -309,6 +309,27 @@
+     return $value;
+ }
+ 
++sub id()
++{
++    my $this = shift;
++
++    return $this->{-selected};
++}
++
++sub set_selection() 
++{
++    my $this = shift;
++    my $id = shift;
++
++    my $changed = (not defined $this->{-selected} or
++			   ($this->{-selected} != $id));
++    $this->{-selected} = $id;
++    $this->run_event('-onchange') if $changed;
++    $this->intellidraw;
++
++    return $this;
++}
++
+ sub select_next()
+ {
+     my $this = shift;
+@@ -505,6 +526,14 @@
+ 
+ This method will return the currently selected value.
+ 
++=item * B<id> ( )
++
++This method will return the index of the currently selected value.
++
++=item * B<set_selection> ( INDEX )
++
++This method marks the item at the position specified as selected.
++
+ =item * B<onChange> ( CODEREF )
+ 
+ This method can be used to set the B<-onchange> event handler

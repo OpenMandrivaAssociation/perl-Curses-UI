@@ -1,0 +1,28 @@
+--- Curses-UI-0.95/lib/Curses/UI/Listbox.pm.pix	2006-10-17 09:42:55.000000000 +0200
++++ Curses-UI-0.95/lib/Curses/UI/Listbox.pm	2006-10-17 09:59:02.000000000 +0200
+@@ -314,6 +314,14 @@
+     return $this->{-ypos};;
+ }
+ 
++sub set_active_id
++{
++    my $this = shift;
++    my $id = shift;
++    $this->{-ypos} = $id;
++    return $this;
++}
++
+ sub draw(;$)
+ {
+     my $this = shift;
+@@ -930,6 +938,10 @@
+ This method will return the index of the currently active (i.e 
+ highlighted line).
+ 
++=item * B<set_active_id> ( INDEX )
++
++This method will set the currently active (i.e highlighted line).
++
+ =item * B<set_selection> ( LIST )
+ 
+ This method marks the items at the positions specified in LIST

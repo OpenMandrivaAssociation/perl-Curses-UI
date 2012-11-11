@@ -1,0 +1,21 @@
+--- Curses-UI-0.95/lib/Curses/UI/Dialog/Basic.pm.pix	2006-10-17 11:01:15.000000000 +0200
++++ Curses-UI-0.95/lib/Curses/UI/Dialog/Basic.pm	2006-10-17 11:06:21.000000000 +0200
+@@ -59,7 +59,7 @@
+     my $remember = $Curses::UI::screen_too_small;
+     my $this = $class->SUPER::new(%args);
+     
+-    $this->add('message', 'TextViewer',
++    my $m = $this->add('message', 'TextViewer',
+         -border      => 1,
+         -vscrollbar  => 1,
+         -wrapping    => 1,
+@@ -69,8 +69,8 @@
+         -fg          => $this->{-fg},
+         -bbg         => $this->{-bg},
+         -bfg         => $this->{-fg},
+-	-focusable   => 0,
+     );    
++    $m->focusable(0) if $m->{-vscrolllen} <= $m->{-sh};
+ 
+     # Create a hash with arguments that may be passed to     
+     # the Buttonbox class.

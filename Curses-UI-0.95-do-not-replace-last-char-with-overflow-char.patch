@@ -1,0 +1,41 @@
+--- Curses-UI-0.95/lib/Curses/UI/TextEditor.pm.pix	2004-11-27 18:12:58.000000000 +0100
++++ Curses-UI-0.95/lib/Curses/UI/TextEditor.pm	2006-10-18 13:31:54.000000000 +0200
+@@ -494,9 +494,11 @@
+             # Get the part of the line that is in view.
+             my $inscreen = '';
+             my $fromxscr = '';
++	    my $return_ended;
+             if ($this->{-xscrpos} < length($l))
+             {
+                 $fromxscr = substr($l, $this->{-xscrpos}, length($l));
++		$return_ended = chomp($fromxscr);
+                 $inscreen = ($this->text_wrap(
+ 		    $fromxscr, 
+ 		    $this->canvaswidth, 
+@@ -520,13 +522,11 @@
+ 		" "x$this->canvaswidth
+ 	    );
+ 
++	    $this->{-canvasscr}->addstr($id, 0, $inscreen);
++
+             # Strip newline and replace by diamond character
+             # if the showhardreturns option is on.
+-            if ($inscreen =~ /\n/)
+-            {
+-                $inscreen =~ s/\n//;
+-                $this->{-canvasscr}->addstr($id, 0, $inscreen);
+-                if ($this->{-showhardreturns})
++            if ($return_ended && $this->{-showhardreturns})
+                 {
+                     if ($this->root->compat)
+                     {
+@@ -537,9 +537,6 @@
+                     $this->{-canvasscr}->attroff(A_ALTCHARSET);
+                     }
+                 }
+-            } else {
+-                $this->{-canvasscr}->addstr($id, 0, $inscreen);
+-            }
+             
+             # Draw overflow characters.
+             if (not $this->{-wrapping} and $this->{-showoverflow})
