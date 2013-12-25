@@ -1,14 +1,14 @@
 %define modname	Curses-UI
-%define modver	0.9607
+%define modver 0.9609
 
 Summary:	A curses based perl OO user interface framework
 Name:		perl-%{modname}
 Version:	%perl_convert_version %{modver}
-Release:	10
+Release:	1
 License:	GPLv2+ or Artistic
 Group:		Development/Perl
 Url:		http://search.cpan.org/dist/%{modname}
-Source0:	http://www.cpan.org/modules/by-module/Curses/%{modname}-%{modver}.tar.gz
+Source0:	http://www.cpan.org/modules/by-module/Curses/Curses-UI-%{modver}.tar.gz
 Patch0:		Curses-UI-0.95-more-Listbox-alike-Popupmenu.patch
 Patch2:		Curses-UI-0.95-add-method-to-modify-button-label.patch
 Patch3:		Curses-UI-0.95-allow-setting-active-line.patch
@@ -54,4 +54,5 @@ COLUMNS=80 LINES=25 make test
 %doc README examples CREDITS Changes
 %{perl_vendorlib}/Curses
 %{_mandir}/man3/*
+
 
