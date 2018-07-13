@@ -20,6 +20,7 @@ Patch8:		Curses-UI-0.9607-gpm-does-not-work--hide-error-for-now.patch
 Patch9:		Curses-UI-0.95-only-redraw-Listbox-when-needed-otherwise-it-occurs-after-focus-next.patch
 
 BuildArch:	noarch
+BuildRequires:	perl(inc::Module::Install)
 BuildRequires:	perl(Curses)
 BuildRequires:	perl(Term::ReadKey)
 BuildRequires:	perl(Test::Pod)
