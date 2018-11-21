@@ -24,6 +24,7 @@ BuildRequires:	perl(inc::Module::Install)
 BuildRequires:	perl(Curses)
 BuildRequires:	perl(Term::ReadKey)
 BuildRequires:	perl(Test::Pod)
+BuildRequires:	perl(Test)
 BuildRequires:	perl(CPAN)
 BuildRequires:	perl-devel
 # temporary dep due to the perl-5.14 bump
