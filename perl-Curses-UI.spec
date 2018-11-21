@@ -24,6 +24,7 @@ BuildRequires:	perl(inc::Module::Install)
 BuildRequires:	perl(Curses)
 BuildRequires:	perl(Term::ReadKey)
 BuildRequires:	perl(Test::Pod)
+BuildRequires:	perl(CPAN)
 BuildRequires:	perl-devel
 # temporary dep due to the perl-5.14 bump
 BuildRequires:	perl-Curses >= 1.280.0-6
@@ -36,20 +37,20 @@ several widgets which can be used to build a user interface.
 
 %prep
 %setup -qn %{modname}-%{modver}
-%apply_patches
+%autopatch -p1
 # perl path hack
 find . -type f | xargs perl -p -i -e "s|^#\!/usr/local/bin/perl|#\!/usr/bin/perl|g"
 
 %build
 %__perl Makefile.PL INSTALLDIRS=vendor
-%make OPTIMIZE="%{optflags}"
+%make_build OPTIMIZE="%{optflags}"
 
 %check
 # need setting COLUMNS and LINES to help it getting "Terminal Size" under nohup or iurt
 COLUMNS=80 LINES=25 make test
 
 %install
-%makeinstall_std
+%make_install
 
 %files
 %doc README examples CREDITS Changes
