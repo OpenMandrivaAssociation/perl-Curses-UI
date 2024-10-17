@@ -7,7 +7,7 @@ Version:	%perl_convert_version %{modver}
 Release:	10
 License:	GPLv2+ or Artistic
 Group:		Development/Perl
-Url:		http://search.cpan.org/dist/%{modname}
+Url:		https://search.cpan.org/dist/%{modname}
 Source0:	http://www.cpan.org/modules/by-module/Curses/Curses-UI-%{modver}.tar.gz
 Patch0:		Curses-UI-0.95-more-Listbox-alike-Popupmenu.patch
 Patch2:		Curses-UI-0.95-add-method-to-modify-button-label.patch
