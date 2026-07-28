@@ -4,7 +4,7 @@
 Summary:	A curses based perl OO user interface framework
 Name:		perl-%{modname}
 Version:	%{modver}
-Release:	11
+Release:	12
 License:	GPLv2+ or Artistic
 Group:		Development/Perl
 Url:		https://metacpan.org/dist/Curses-UI
@@ -21,15 +21,11 @@ Patch9:		Curses-UI-0.95-only-redraw-Listbox-when-needed-otherwise-it-occurs-afte
 
 BuildArch:	noarch
 BuildRequires:	make
-BuildRequires:	perl(inc::Module::Install)
 BuildRequires:	perl(Curses)
 BuildRequires:	perl(Term::ReadKey)
-BuildRequires:	perl(Test::Pod)
 BuildRequires:	perl(Test)
-BuildRequires:	perl(CPAN)
 BuildRequires:	perl-devel
 # temporary dep due to the perl-5.14 bump
-BuildRequires:	perl-Curses >= 1.280.0-6
 Requires:	perl(Curses)
 Requires:	perl(Term::ReadKey)
 
