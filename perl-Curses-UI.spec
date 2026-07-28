@@ -4,7 +4,7 @@
 Summary:	A curses based perl OO user interface framework
 Name:		perl-%{modname}
 Version:	%{modver}
-Release:	12
+Release:	13
 License:	GPLv2+ or Artistic
 Group:		Development/Perl
 Url:		https://metacpan.org/dist/Curses-UI
@@ -40,7 +40,7 @@ several widgets which can be used to build a user interface.
 find . -type f | xargs perl -p -i -e "s|^#\!/usr/local/bin/perl|#\!/usr/bin/perl|g"
 
 %build
-%__perl Makefile.PL INSTALLDIRS=vendor
+%__perl -I. Makefile.PL INSTALLDIRS=vendor
 %make_build OPTIMIZE="%{optflags}"
 
 %check
